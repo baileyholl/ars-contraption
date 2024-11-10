@@ -50,6 +50,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            arg "-mixin.config=" + "ars_creo" + ".mixins.json"
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
@@ -68,6 +69,7 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            arg "-mixin.config=" + "ars_creo" + ".mixins.json"
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
@@ -86,13 +88,15 @@ minecraft {
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+            arg "-mixin.config=" + "ars_creo" + ".mixins.json"
+
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'an_addon', '--all', '--output', file('src/generated/resources/'), "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
+            args '--mod', 'ars_creo', '--all', '--output', file('src/generated/resources/'), "--existing", "\"" + sourceSets.main.resources.srcDirs[0] + "\""
 
             mods {
-                an_addon {
+                ars_creo {
                     source sourceSets.main
                 }
             }
@@ -141,8 +145,8 @@ repositories {
 dependencies {
 
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
-    implementation fg.deobf("com.simibubi.create:create-1.20.1:0.5.1.d-9:slim"){ transitive = false }
-    implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-1.20:${flywheel_version}")
+    implementation fg.deobf("com.simibubi.create:create-1.20.1:${create_version}:slim") { transitive = false }
+    implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-1.20.1:${flywheel_version}")
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
     implementation fg.deobf("com.hollingsworth.ars_nouveau:ars_nouveau-${mc_version}:${ars_version}")
 
@@ -160,9 +164,11 @@ dependencies {
 
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 
-
 }
 
+mixin {
+    add sourceSets.main, "ars_creo.refmap.json"
+}
 
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
@@ -175,6 +181,7 @@ jar {
                 "Implementation-Version": "${version}",
                 "Implementation-Vendor" :"baileyh",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs": "ars_creo.mixins.json"
         ])
     }
 }
